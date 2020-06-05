@@ -1,25 +1,18 @@
 import requests
-import json
-from requests_oauthlib import OAuth1
 import time
+from connect import url, auth
 
-url = 'https://api.twitter.com/1.1/statuses/update.json'
-tweet = {'status': 'Whatever happens, happens. #amorfati'}
-
-#Authentication process
-with open("C:\\Users\Ajax Russell\\amorfati\Twitter-Client\Twitter-Client\data\\twitter_credential.json") as json_file:
-    auth_codes = json.load(json_file)
-auth = OAuth1(auth_codes['CONSUMER_KEY'], auth_codes['CONSUMER_SECRET'], auth_codes['ACCESS_TOKEN'], auth_codes['ACCESS_SECRET'])
-
-#Assume you want to send at 20:00
+tweet = {'status': input("What's happening today? \n")}
+post_time = str(input("What time do you want to post? "))
 while True:
-    if time.strftime("%H:%M") == "20:03":
-        r = requests.post(url, params = tweet, auth = auth)
-        if r.status_code == 200:
+    if time.strftime("%H:%M") == post_time:
+        automate = requests.post(url, params = tweet, auth = auth)
+        if automate.status_code == 200:
             print("Your Tweet was successfully sent!")
             break
         else:
             print("Your Tweet was not sent!")
+            print(automate.text)
     else:
         print("The time now is ")
         print(time.strftime("%H:%M"))
